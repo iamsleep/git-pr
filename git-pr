@@ -1,0 +1,27 @@
+#!/bin/bash
+
+title=$1
+msg=$2
+me=`basename $0`
+
+if [ -z "$title" -o -z "$msg" ]; then
+    cat << HELP
+$me "TWAUCTIONS-5293 update cod upload file path" "this is comment message"
+HELP
+exit;
+fi
+
+whoami=`whoami`
+headBranch=`git rev-parse --abbrev-ref HEAD`
+repo=$(basename `git rev-parse --show-toplevel`)
+token=`git config user.token`
+repos=`curl -s -u ${token}:x-oauth-basic -H "Accept: application/vnd.github.moondragon-preview+json" -H "Content-Type: application/json" https://api.github.com/api/v3/repos/$whoami/$repo | jq -r ".parent.full_name"`
+
+# get pull request result
+url=`curl -k -s -u $token:x-oauth-basic -H "Accept: application/vnd.github.moondragon-preview+json" -H "Content-Type: application/json" -d "{\"title\":\"${title}\",\"body\":\"${msg}\",\"head\":\"${whoami}:${headBranch}\",\"base\":\"master\"}" https://api.github.com/api/v3/repos/$repos/pulls | jq -r ".html_url"`
+
+if [ $url == "null" ]; then
+    echo "execute command fail, please check your repos status."
+else
+    echo $url
+fi
