@@ -10,5 +10,5 @@ before use it, you need to do three thing
   `git config --global user.token`
 
 2. make sure you have install [jq](http://stedolan.github.io/jq/)
-3. chmod +x git-pr
+3. `chmod +x git-pr`
 
