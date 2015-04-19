@@ -4,9 +4,11 @@ why do we add this command ?
 
 add github api token
 ---
-before use it, you need to do two thing
+before use it, you need to do three thing
 
 1. add your github api token from command
   `git config --global user.token`
 
 2. make sure you have install [jq](http://stedolan.github.io/jq/)
+3. chmod +x git-pr
+
